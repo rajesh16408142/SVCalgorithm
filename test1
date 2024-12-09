@@ -1,0 +1,41 @@
+from sklearn.svm import SVC
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+# Sample data
+texts = ["The new policy is great for national security.",
+         "The government's actions are harmful to the nation.",
+         "Experts are hopeful for future peace.",
+         "The current situation is disastrous for the country."]
+labels = ["Positive", "Negative", "Positive", "Negative"]
+# Convert text to numerical features using TF-IDF
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(texts)
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.3, random_state=42)
+X_train
+<Compressed Sparse Row sparse matrix of dtype 'float64'
+	with 14 stored elements and shape (2, 22)>
+y_train
+['Positive', 'Positive']
+list(X_train)
+[<Compressed Sparse Row sparse matrix of dtype 'float64'
+ 	with 8 stored elements and shape (1, 22)>,
+ <Compressed Sparse Row sparse matrix of dtype 'float64'
+ 	with 6 stored elements and shape (1, 22)>]
+# Train an SVM model
+svm_model = SVC(kernel='linear')  # Linear kernel for text classification
+svm_model.fit(X_train, y_train)
+
+# Make predictions on the test data
+y_pred = svm_model.predict(X_test)
+
+# Evaluate the model performance
+print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+print(classification_report(y_test, y_pred, target_names=['negative', 'positive']))
+
+
+---------------------------------------------------------------------------
+
+ 
+ 
